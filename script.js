@@ -10,8 +10,8 @@ function extractVideoId(url) {
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
-        height: '0',
-        width: '0',
+        height: '200',
+        width: '200',
         videoId: videoId,
         playerVars: {
             autoplay: 0,
@@ -21,9 +21,33 @@ function onYouTubeIframeAPIReady() {
             showinfo: 0,
         },
         events: {
-            onStateChange: onPlayerStateChange
+            onStateChange: onPlayerStateChange,
+            onReady: onPlayerReady,
         }
     });
+}
+
+function onPlayerReady(event) {
+    getVideoDetails(videoId);
+}
+
+function getVideoDetails(videoId) {
+    const apiKey = 'AIzaSyAOd0yVDrngOCXxOE9Kq92IbXKnSeTLoS0';
+    const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.items && data.items.length > 0) {
+                const videoTitle = data.items[0].snippet.title;
+                const channelTitle = data.items[0].snippet.channelTitle;
+                document.getElementById('track-name').textContent = videoTitle;
+                document.getElementById('track-artist').textContent = channelTitle;
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao buscar os detalhes do vídeo:', error);
+        });
 }
 
 function onPlayerStateChange(event) {
@@ -42,13 +66,6 @@ document.getElementById('playPause').addEventListener('click', function() {
     } else {
         player.playVideo();
     }
-});
-
-document.getElementById('prev').addEventListener('click', function() {
-});
-
-document.getElementById('next').addEventListener('click', function() {
-
 });
 
 document.getElementById('load-video').addEventListener('click', function() {
