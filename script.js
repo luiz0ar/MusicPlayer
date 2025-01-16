@@ -2,6 +2,10 @@ let player;
 let isPlaying = false;
 let videoId = '';
 
+
+const playIcon = '<i class="fas fa-play"></i>';
+const pauseIcon = '<i class="fas fa-pause"></i>';
+
 function extractVideoId(url) {
     const regex = /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/([a-zA-Z0-9_-]+))|youtu\.be\/([a-zA-Z0-9_-]+))/;
     const match = url.match(regex);
@@ -32,7 +36,7 @@ function onPlayerReady(event) {
 }
 
 function getVideoDetails(videoId) {
-    const apiKey = '';
+    const apiKey = 'AIzaSyCP99H5PiQQj0uBvOGCSteGF-gxRTEAhCQ';
     const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`;
 
     fetch(url)
@@ -53,10 +57,10 @@ function getVideoDetails(videoId) {
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
         isPlaying = true;
-        document.getElementById('playPause').textContent = '⏸️';
+        document.getElementById('playPause').innerHTML = pauseIcon;
     } else if (event.data == YT.PlayerState.PAUSED) {
         isPlaying = false;
-        document.getElementById('playPause').textContent = '⏯️';
+        document.getElementById('playPause').innerHTML = playIcon;
     }
 }
 
