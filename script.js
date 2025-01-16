@@ -32,7 +32,7 @@ function onPlayerReady(event) {
 }
 
 function getVideoDetails(videoId) {
-    const apiKey = 'AIzaSyAOd0yVDrngOCXxOE9Kq92IbXKnSeTLoS0';
+    const apiKey = '';
     const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${apiKey}`;
 
     fetch(url)
